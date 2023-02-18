@@ -14,6 +14,7 @@ parser.add_argument('-l','--loss', type=str, default = "cross_entropy")
 parser.add_argument('-o','--optimizer', type=str, default = "sgd")
 parser.add_argument('-w_i','--weight_init', type=str, default = "random")
 parser.add_argument('-a','--activation', type=str, default = "sigmoid")
+parser.add_argument('-op','--output', type=str, default = "softmax")
 
 # Integer type arguments
 parser.add_argument('-e','--epochs', type=int, default = 1)
@@ -48,6 +49,7 @@ print("weight_init : ",args.weight_init)
 print("num_layers : ",args.num_layers)
 print("hidden_size : ",args.hidden_size)
 print("activation : ",args.activation)
+print("output : ",args.output)
 
 
 # More datasets can be added in the following code
