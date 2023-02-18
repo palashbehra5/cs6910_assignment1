@@ -2,6 +2,7 @@ import numpy as np
 import argparse
 from tensorflow.keras.datasets import fashion_mnist,mnist
 from model import model
+from functions import functions
 
 parser = argparse.ArgumentParser(description='CS6910 - Assignment 1 :')
 
