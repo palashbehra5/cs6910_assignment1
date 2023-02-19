@@ -16,12 +16,13 @@ def softmax(a_l):
     return (np.e**a_l)/np.sum(np.e**(a_l))
 
 def relu(z):
-
-    return max(0,z)
+    z[z<0]=0
+    return z
 
 def d_relu(z):
-
-    return 0 if z<=0 else 1
+    z[z<=0]=0
+    z[z>0]=1
+    return z
 
 def tanh(z):
 
@@ -30,6 +31,13 @@ def tanh(z):
 def d_tanh(z):
 
     return 1-(tanh(z)**2)
+
+def e_l(y,k):
+
+    e_l = np.zeros((k,1))
+    e_l[y][0] = 1;
+
+    return e_l
 
 
 functions = {
@@ -40,6 +48,7 @@ functions = {
     "relu":relu,
     "d_relu":d_relu,
     "tanh":tanh,
-    "d_tanh":d_tanh
+    "d_tanh":d_tanh,
+    "e_l":e_l
 
 }
