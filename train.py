@@ -4,9 +4,10 @@ from tensorflow.keras.datasets import fashion_mnist,mnist
 from model import model
 from optimizer import optimizer
 import seaborn as sns
-from sklearn.metrics import confusion_matrix
 from functions import functions,e_l
 import matplotlib.pyplot as plt
+from tqdm import tqdm
+from metrics import accuracy,confusion_matrix
 
 if __name__ == "__main__":
 
@@ -84,13 +85,13 @@ L = model_params['num_layers']+2
 
 ######### TRAINING MODEL ###########
 
-for e in range(1,epochs+1):
+for e in tqdm(range(1,epochs+1)):
 
   Loss = 0
   curr = 0
   updates = 0
 
-  for i in range(len(x_train)):
+  for i in tqdm(range(len(x_train))):
 
     # Returns a,h,y_hat
     fw = nn.forward(x_train[i])
@@ -114,20 +115,15 @@ for e in range(1,epochs+1):
 
       # Use gradients to optimize parameters
       opt.optimize(nn,dw,db,batch_size)
-      # print("A")
-      # print(opt.W_update[1])
-      # print("B")
-      # print(dw[2]*1e-3)
       curr = 0
 
   # Residue update
   if(curr>0): opt.optimize(nn,dw,db,batch_size)
 
-  print(nn.W[2])
   print(e,Loss/len(x_train))
 
+y_pred_train = [np.argmax(nn.forward(x_train[i])['y_hat']) for i in range(len(x_train))]
+y_pred_test = [np.argmax(nn.forward(x_test[i])['y_hat']) for i in range(len(x_test))]
 
-plt.figure(figsize=(10,10))
-y_pred = [np.argmax(nn.forward(x_train[i])['y_hat']) for i in range(len(x_train))]
-sns.heatmap(confusion_matrix(y_train,y_pred),annot=True)
-plt.show()
+print("Training Accuracy : ",accuracy(y_pred_train,y_train))
+print("Testing Accuracy : ",accuracy(y_pred_test,y_test))

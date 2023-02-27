@@ -121,8 +121,6 @@ class optimizer:
 
     elif(self.optimizer=="more_optimizers_go_here"): return 1
 
-
-    
     # Theta_(t+1) = Theta_t - (update/batch_size)
     self.update(W,b,W_update,b_update,batch_size)
 

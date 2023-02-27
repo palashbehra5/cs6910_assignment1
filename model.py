@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
-from functions import functions,e_l
+from functions import e_l,functions
 
 class model:
 
@@ -135,22 +135,20 @@ class model:
     # Note : dw[0] and db[0] are both dummy variables
     dw_ = [0]*(L)
     db_ = [0]*(L)
-    da = [0]*(L)
-    dh = [0]*(L)
     
-    da[L-1] = -(e_l(y,k)-y_hat)
+    da = -(e_l(y,k)-y_hat)
 
     for i in range(L-1,0,-1):
 
-      dw_[i] =  da[i] @ h[i-1].T
+      dw_[i] =  da @ h[i-1].T
 
-      db_[i] = da[i]
+      db_[i] = da
 
       if(i==1) : break
 
-      dh[i-1] = self.W[i].T @ da[i]
+      dh = self.W[i].T @ da
 
-      da[i-1] = dh[i-1] * functions["d_"+self.activation](a[i-1])
+      da = dh * functions["d_"+self.activation](a[i-1])
       
     # Returned values to be accumulated
     return {'dw_':dw_,'db_':db_}

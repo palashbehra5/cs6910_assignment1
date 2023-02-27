@@ -2,21 +2,23 @@ import numpy as np
 
 def sigmoid(z):
 
-    # Scaling 
-    z = (z - min(z) )/ (max(z) - min(z))
-    return 1/(1+(np.e**(-z)))
+    sigmoid = 1/(1+(np.exp(-z)))
+    sigmoid[sigmoid==0] = 1e-4
+    sigmoid[sigmoid==1] = 1-1e-4
+    return sigmoid
 
 def d_sigmoid(z):
 
-    # Scaling 
-    z = (z - min(z) )/ (max(z) - min(z))
-    return sigmoid(z)*(1-sigmoid(z))
+    d_sigmoid = sigmoid(z)*(1-sigmoid(z))
+    d_sigmoid[d_sigmoid==0] = 1e-4
+    d_sigmoid[d_sigmoid==1] = 1-1e-4
+    return d_sigmoid
 
 def softmax(a_l):
 
     # Scaling 
-    a_l = (a_l - min(a_l) )/ (max(a_l) - min(a_l))
-    return (np.e**a_l)/np.sum(np.e**(a_l))
+    e_x = np.exp(a_l - np.max(a_l))
+    return e_x / e_x.sum()
 
 def relu(z):
     
@@ -31,14 +33,13 @@ def d_relu(z):
 
 def tanh(z):
 
-    # Scaling 
-    z = (z - min(z) )/ (max(z) - min(z))
-    return np.tanh(z)
+    z = np.tanh(z)
+    z[z==1] = 1-1e-4
+    z[z==-1] = -(1-1e-4)
+    return z
 
 def d_tanh(z):
 
-    # Scaling 
-    z = (z - min(z) )/ (max(z) - min(z))
     return 1-(tanh(z)**2)
 
 def e_l(y,k):
