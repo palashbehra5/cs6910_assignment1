@@ -10,8 +10,6 @@ def sigmoid(z):
 def d_sigmoid(z):
 
     d_sigmoid = sigmoid(z)*(1-sigmoid(z))
-    d_sigmoid[d_sigmoid==0] = 1e-4
-    d_sigmoid[d_sigmoid==1] = 1-1e-4
     return d_sigmoid
 
 def softmax(a_l):
@@ -45,8 +43,7 @@ def d_tanh(z):
 def e_l(y,k):
 
     e_l = np.zeros((k,1))
-    e_l[y][0] = 1;
-
+    e_l[y][0] = 1
     return e_l
 
 

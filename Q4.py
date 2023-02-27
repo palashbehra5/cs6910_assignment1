@@ -6,34 +6,20 @@ from optimizer import optimizer
 from functions import functions,e_l
 from metrics import accuracy,confusion_matrix
 
-(x_train, y_train), (x_test, y_test) = fashion_mnist.load_data()
-x_train = x_train.reshape((x_train.shape[0],x_train.shape[1]*x_train.shape[2]))
-x_test = x_test.reshape((x_test.shape[0],x_test.shape[1]*x_test.shape[2]))
-
-# Number of data points
-N = len(x_train)
-
-# Shape of input layer
-d = x_train.shape[1]
-
-# Shape of output layer
-k = len(set(y_train))
-
 wandb.login()
 
 sweep_config = {
     'method': 'random',
     'parameters': {
-        'num_epochs': {'values': [5, 10, 15]},
-        'num_hidden_layers': {'values': [2, 3, 4]},
+        'num_epochs': {'values': [10, 15, 20]},
+        'num_hidden_layers': {'values': [2, 3]},
         'hidden_layer_size': {'values': [32, 64, 128]},
-        'learning_rate': {'values': [1e-2, 1e-3, 1e-4]},
-        'optimizer': {'values': ['sgd', 'momentum', 'rmsprop']},
+        'learning_rate': {'values': [1e-1, 1e-2]},
+        'optimizer': {'values': ['sgd', 'momentum']},
         'batch_size': {'values': [4, 32, 256]},
-        'weight_initialisation': {'values': ['random', 'xavier']},
-        'activation_function': {'values': ['sigmoid', 'tanh', 'ReLU']},
-        'momentum' : {'values' : [0.6,0.7,0.8]},
-        'beta' : {'values' : [0.5,0.6]}
+        'weight_initialisation': {'values': ['xavier']},
+        'activation_function': {'values': ['sigmoid', 'tanh', 'relu']},
+        'momentum' : {'values' : [0.7,0.8]}
     }
 }
 
@@ -68,14 +54,29 @@ def train(config=None):
             
             "learning_rate": config.learning_rate,
             "momentum": config.momentum,
-            "beta": config.beta,
-            "beta1": 	0.5,
+            "beta": 0.5,
+            "beta1": 0.5,
             "beta2": 0.5,
             "epsilon": 	0.00001,
             "weight_decay": 0,
             "optimizer": config.optimizer
 
         }
+
+        (x_train, y_train), (x_test, y_test) = fashion_mnist.load_data()
+        x_train = x_train.reshape((x_train.shape[0],x_train.shape[1]*x_train.shape[2]))
+        x_test = x_test.reshape((x_test.shape[0],x_test.shape[1]*x_test.shape[2]))
+
+        x_train = x_train/255
+
+        # Number of data points
+        N = len(x_train)
+
+        # Shape of input layer
+        d = x_train.shape[1]
+
+        # Shape of output layer
+        k = len(set(y_train))
 
         model_params['input_layer_size'] = d
         model_params['output_layer_size'] = k
@@ -134,4 +135,4 @@ def train(config=None):
 
         wandb.log({"train_accuracy": accuracy(y_pred_train,y_train), "test_accuracy": accuracy(y_pred_test,y_test)})         
 
-wandb.agent(sweep_id, train, count = 10)
+wandb.agent(sweep_id, train, count = 20)
