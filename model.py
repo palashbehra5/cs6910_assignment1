@@ -6,14 +6,7 @@ from functions import e_l,functions
 class model:
 
   def __init__(self , params):
-
-    #  __  __             _        _      _____                                     _                   
-    # |  \/  |           | |      | |    |  __ \                                   | |                  
-    # | \  / |  ___    __| |  ___ | |    | |__) |__ _  _ __  __ _  _ __ ___    ___ | |_  ___  _ __  ___ 
-    # | |\/| | / _ \  / _` | / _ \| |    |  ___// _` || '__|/ _` || '_ ` _ \  / _ \| __|/ _ \| '__|/ __|
-    # | |  | || (_) || (_| ||  __/| |    | |   | (_| || |  | (_| || | | | | ||  __/| |_|  __/| |   \__ \
-    # |_|  |_| \___/  \__,_| \___||_|    |_|    \__,_||_|   \__,_||_| |_| |_| \___| \__|\___||_|   |___/
-                                                                                                   
+                                                                                              
     # Initializing Model Parameters
     # n : Hidden layer size in Neurons
     # d : Input layer size in Neurons
@@ -30,18 +23,10 @@ class model:
     self.output = params['output']
     self.loss = params['loss']
     self.weight_init = params['weight_init']
-    # Weight Matrices, List of 2d matrices, each of (prev_layer_size)*(next_layer_size).
-    # Bias Vectors, List of vectors, each of (next_layer_size).
     
-    #  __          __    _         _      _                              _     ____   _                        
-    #  \ \        / /   (_)       | |    | |                            | |   |  _ \ (_)                       
-    #   \ \  /\  / /___  _   __ _ | |__  | |_  ___      __ _  _ __    __| |   | |_) | _   __ _  ___   ___  ___ 
-    #    \ \/  \/ // _ \| | / _` || '_ \ | __|/ __|    / _` || '_ \  / _` |   |  _ < | | / _` |/ __| / _ \/ __|
-    #     \  /\  /|  __/| || (_| || | | || |_ \__ \   | (_| || | | || (_| |   | |_) || || (_| |\__ \|  __/\__ \
-    #      \/  \/  \___||_| \__, ||_| |_| \__||___/    \__,_||_| |_| \__,_|   |____/ |_| \__,_||___/ \___||___/
-    #                        __/ |                                                                             
-    #                       |___/   
-
+    
+    # Weight Matrices, List of 2d matrices, each of (prev_layer_size)*(next_layer_size).
+    # Bias Vectors, List of vectors, each of (next_layer_size) 
     # Creating local variables
 
     n = self.n
@@ -82,17 +67,11 @@ class model:
       self.W.append(np.random.uniform(-(6/(k+n))**0.5,(6/(k+n))**0.5,[k,n]))
       self.b.append(np.random.uniform(-(6/(k+1))**0.5,(6/(k+1))**0.5,[k,1]))
 
+      
     # Preactivation, Postactivation and y_hat vectors.
     # h size : (layer_size), total L+1 vectors
     # a size : (layer_size), total L+1 vectors
     # y_hat size : one single vecto, (N x k)
-    #   ______               _     ______                                     _ 
-    #  |  ____|             | |   |  ____|                                   | |
-    #  | |__  ___   ___   __| |   | |__  ___   _ __ __      __ __ _  _ __  __| |
-    #  |  __|/ _ \ / _ \ / _` |   |  __|/ _ \ | '__|\ \ /\ / // _` || '__|/ _` |
-    #  | |  |  __/|  __/| (_| |   | |  | (_) || |    \ V  V /| (_| || |  | (_| |
-    #  |_|   \___| \___| \__,_|   |_|   \___/ |_|     \_/\_/  \__,_||_|   \__,_|
-
     # Feed Forwward function (model_instance, X[i]) : 
                                                                                                                                                                                         
   def forward(self, X):
@@ -115,15 +94,6 @@ class model:
 
     return {'y_hat':y_hat,'a':a,'h':h}
 
-    #   ____                _                                                    _    _               
-    #  |  _ \              | |                                                  | |  (_)              
-    #  | |_) |  __ _   ___ | | __ _ __   _ __  ___   _ __    __ _   __ _   __ _ | |_  _   ___   _ __  
-    #  |  _ <  / _` | / __|| |/ /| '_ \ | '__|/ _ \ | '_ \  / _` | / _` | / _` || __|| | / _ \ | '_ \ 
-    #  | |_) || (_| || (__ |   < | |_) || |  | (_) || |_) || (_| || (_| || (_| || |_ | || (_) || | | |
-    #  |____/  \__,_| \___||_|\_\| .__/ |_|   \___/ | .__/  \__,_| \__, | \__,_| \__||_| \___/ |_| |_|
-    #                            | |                | |             __/ |                             
-    #                            |_|                |_|            |___/                              
-
   def backpropagate(self,y,params):
 
     y_hat = params['y_hat']
@@ -140,8 +110,10 @@ class model:
 
     for i in range(L-1,0,-1):
 
+      # WRT W
       dw_[i] =  da @ h[i-1].T
-
+      
+      # WRT b
       db_[i] = da
 
       if(i==1) : break
