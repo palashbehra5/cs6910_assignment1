@@ -1,5 +1,5 @@
 import numpy as np
-from interface import parse
+from interface import model_params,optimizer_params,training_params
 from tensorflow.keras.datasets import fashion_mnist,mnist
 from model import model
 from optimizer import optimizer
@@ -9,53 +9,16 @@ import matplotlib.pyplot as plt
 from tqdm import tqdm
 from metrics import accuracy,confusion_matrix
 
-if __name__ == "__main__":
 
-  args = parse()
+# More datasets can be added in the following code
 
-  # More datasets can be added in the following code
+########################################### ADD BELOW ###########################################
 
-  ########################################### ADD BELOW ###########################################
+if (training_params['dataset'] == "fashion_mnist") :  (x_train, y_train), (x_test, y_test) = fashion_mnist.load_data()
+elif (training_params['dataset'] == "mnist") :  (x_train, y_train), (x_test, y_test) = mnist.load_data()
 
-  if (args.dataset == "fashion_mnist") :  (x_train, y_train), (x_test, y_test) = fashion_mnist.load_data()
-  elif (args.dataset == "mnist") :  (x_train, y_train), (x_test, y_test) = mnist.load_data()
+#################################################################################################
 
-  #################################################################################################
-
-  model_params = {
-
-      
-      "loss": args.loss,
-      "weight_init":args.weight_init,
-      "num_layers": args.num_layers,
-      "hidden_size": args.hidden_size,
-      "activation": args.activation,
-      "output": args.output
-
-  }
-
-  optimizer_params = {
-
-      "optimizer": args.optimizer,
-      "learning_rate": args.learning_rate,
-      "momentum": args.momentum,
-      "beta": args.beta,
-      "beta1": args.beta1,
-      "beta2": args.beta2,
-      "epsilon": 	args.epsilon,
-      "weight_decay": args.weight_decay
-
-  }
-
-  training_params = {
-
-      "epochs": args.epochs,
-      "batch_size": args.batch_size,
-      "dataset":args.dataset
-
-  }
-
-(x_train, y_train), (x_test, y_test) = fashion_mnist.load_data()
 x_train = x_train.reshape((x_train.shape[0],x_train.shape[1]*x_train.shape[2]))
 x_test = x_test.reshape((x_test.shape[0],x_test.shape[1]*x_test.shape[2]))
 
