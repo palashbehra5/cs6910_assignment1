@@ -1,4 +1,5 @@
 import numpy as np
+from metrics import cross_entropy,mse
 
 def sigmoid(z):
 
@@ -46,6 +47,14 @@ def e_l(y,k):
     e_l[y][0] = 1
     return e_l
 
+def d_cross_entropy(y,k,y_hat):
+
+    return -(e_l(y,k)-y_hat)
+
+def d_mse(y,k,y_hat):
+
+    return 2 * (y_hat - e_l(y,k)) * (y_hat * (1 - y_hat))
+
 
 functions = {
 
@@ -56,6 +65,10 @@ functions = {
     "d_relu":d_relu,
     "tanh":tanh,
     "d_tanh":d_tanh,
-    "e_l":e_l
+    "e_l":e_l,
+    "cross_entropy":cross_entropy,
+    "mse":mse,
+    "d_cross_entropy":d_cross_entropy,
+    "d_mse":d_mse
 
 }

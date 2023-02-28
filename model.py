@@ -6,7 +6,7 @@ from functions import e_l,functions
 class model:
 
   def __init__(self , params):
-                                                                                              
+
     # Initializing Model Parameters
     # n : Hidden layer size in Neurons
     # d : Input layer size in Neurons
@@ -23,10 +23,8 @@ class model:
     self.output = params['output']
     self.loss = params['loss']
     self.weight_init = params['weight_init']
-    
-    
     # Weight Matrices, List of 2d matrices, each of (prev_layer_size)*(next_layer_size).
-    # Bias Vectors, List of vectors, each of (next_layer_size) 
+    # Bias Vectors, List of vectors, each of (next_layer_size).
     # Creating local variables
 
     n = self.n
@@ -67,7 +65,6 @@ class model:
       self.W.append(np.random.uniform(-(6/(k+n))**0.5,(6/(k+n))**0.5,[k,n]))
       self.b.append(np.random.uniform(-(6/(k+1))**0.5,(6/(k+1))**0.5,[k,1]))
 
-      
     # Preactivation, Postactivation and y_hat vectors.
     # h size : (layer_size), total L+1 vectors
     # a size : (layer_size), total L+1 vectors
@@ -106,20 +103,17 @@ class model:
     dw_ = [0]*(L)
     db_ = [0]*(L)
     
-    da = -(e_l(y,k)-y_hat)
+    # Gradients of Loss funtion WRT output layer preactivation
+    da = functions["d_"+self.loss](y,k,y_hat)
 
     for i in range(L-1,0,-1):
 
-      # WRT W
       dw_[i] =  da @ h[i-1].T
-      
-      # WRT b
       db_[i] = da
 
       if(i==1) : break
 
       dh = self.W[i].T @ da
-
       da = dh * functions["d_"+self.activation](a[i-1])
       
     # Returned values to be accumulated

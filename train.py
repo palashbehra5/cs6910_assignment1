@@ -3,11 +3,9 @@ from interface import model_params,optimizer_params,training_params
 from tensorflow.keras.datasets import fashion_mnist,mnist
 from model import model
 from optimizer import optimizer
-import seaborn as sns
-from functions import functions,e_l
-import matplotlib.pyplot as plt
+from functions import functions
 from tqdm import tqdm
-from metrics import accuracy,confusion_matrix
+from metrics import accuracy
 
 
 # More datasets can be added in the following code
@@ -59,7 +57,7 @@ for e in tqdm(range(1,epochs+1)):
     # Returns a,h,y_hat
     fw = nn.forward(x_train[i])
 
-    Loss += -np.log((e_l(y_train[i],k).T @ fw['y_hat'])[0][0]) 
+    Loss += functions[model_params["loss"]](y_train[i],k,fw['y_hat'])
 
     # Returns dw_,db_
     bw = nn.backpropagate(y_train[i],fw)
@@ -83,7 +81,7 @@ for e in tqdm(range(1,epochs+1)):
   # Residue update
   if(curr>0): opt.optimize(nn,dw,db,batch_size)
 
-  print(e,Loss/len(x_train))
+  print(e,Loss/N)
 
 y_pred_train = [np.argmax(nn.forward(x_train[i])['y_hat']) for i in range(len(x_train))]
 y_pred_test = [np.argmax(nn.forward(x_test[i])['y_hat']) for i in range(len(x_test))]
