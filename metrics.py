@@ -23,7 +23,7 @@ def e_l(y,k):
 
 def cross_entropy(y,k,y_hat):
 
-    return -np.log(np.dot(e_l(y,k)),y_hat)
+    return -np.log(np.dot(e_l(y,k).reshape(k,),y_hat.reshape(len(y_hat,))))
 
 def mse(y,k,y_hat):
 

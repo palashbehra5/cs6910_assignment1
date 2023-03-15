@@ -19,6 +19,17 @@ def softmax(a_l):
     e_x = np.exp(a_l - np.max(a_l))
     return e_x / e_x.sum()
 
+def arctan(z):
+
+    return np.arctan(z)
+
+def d_arctan(z):
+
+    z = 1/(1+(z**2))
+    z[z==0] = 1e-4
+    z[z==1] = 1-(1e-4)
+    return z
+
 def relu(z):
     
     z[z<0]=0
@@ -55,6 +66,13 @@ def d_mse(y,k,y_hat):
 
     return 2 * (y_hat - e_l(y,k)) * (y_hat * (1 - y_hat))
 
+def softplus(z):
+
+    return np.log(1+np.exp(z))
+
+def d_softplus(z):
+
+    return sigmoid(z)
 
 functions = {
 
@@ -69,6 +87,10 @@ functions = {
     "cross_entropy":cross_entropy,
     "mse":mse,
     "d_cross_entropy":d_cross_entropy,
-    "d_mse":d_mse
+    "d_mse":d_mse,
+    "softplus":softplus,
+    "d_softplus":d_softplus,
+    "arctan" : arctan,
+    "d_arctan" : d_arctan
 
 }
