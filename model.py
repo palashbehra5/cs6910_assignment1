@@ -34,8 +34,8 @@ class model:
 
     # Initializing Weights and Biases
     # Total weights,biases required : L-1
-    self.W = [[]]
-    self.b = [[]]
+    self.W = [0]
+    self.b = [0]
 
     if(self.weight_init=="random") : 
 
