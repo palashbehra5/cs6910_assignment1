@@ -23,7 +23,7 @@ sweep_config = {
     }
 }
 
-sweep_id = wandb.sweep(sweep_config, project="loss_comparison_runs")
+sweep_id = wandb.sweep(sweep_config, project="loss_comparison_runs_final")
 
 def train(config=None):
     # Initialize a new wandb run
@@ -143,9 +143,9 @@ def train(config=None):
           
           wandb.log({"loss": Loss/N, "epoch": e}) 
 
-        y_pred_train = [np.argmax(nn.forward(x_train[i])['y_hat']) for i in range(len(x_train))]
-        y_pred_val = [np.argmax(nn.forward(x_val[i])['y_hat']) for i in range(len(x_val))]
+          y_pred_train = [np.argmax(nn.forward(x_train[i])['y_hat']) for i in range(len(x_train))]
+          y_pred_val = [np.argmax(nn.forward(x_val[i])['y_hat']) for i in range(len(x_val))]
 
-        wandb.log({"train_accuracy": accuracy(y_pred_train,y_train), "val_accuracy": accuracy(y_pred_val,y_val)})
+          wandb.log({"train_accuracy": accuracy(y_pred_train,y_train), "val_accuracy": accuracy(y_pred_val,y_val)})
 
 wandb.agent(sweep_id, train)
