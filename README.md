@@ -6,6 +6,7 @@ Usage
 - The framework can be run by executing the train.py script with the appropriate command-line arguments. The available arguments and their default values are as follows:
 String type arguments
 
+```
     -wp or --wandb_project: wandb project name (default: "myprojectname")
     -we or --wandb_entity: wandb entity name (default: "myname")
     -d or --dataset: name of the dataset (default: "mnist")
@@ -14,16 +15,20 @@ String type arguments
     -w_i or --weight_init: weight initialization method to use (default: "xavier")
     -a or --activation: activation function to use (default: "relu")
     -opt or --output: output activation function to use (default: "softmax")
+```
 
 - Integer type arguments
 
-    -e or --epochs: number of epochs to train for (default: 100)
+```
+    -e or --epochs: number of epochs to train for (default: 10)
     -nhl or --num_layers: number of hidden layers in the model (default: 2)
     -sz or --hidden_size: number of neurons in each hidden layer (default: 128)
     -b or --batch_size: batch size to use for training (default: 4)
+```
 
 - Float type arguments
 
+```
     -lr or --learning_rate: learning rate to use for optimization (default: 0.01)
     -m or --momentum: momentum parameter to use for optimization (default: 0.8)
     -beta: beta parameter to use for optimization (default: 0.9)
@@ -31,6 +36,7 @@ String type arguments
     -beta2: beta2 parameter to use for optimization (default: 0.99)
     -eps: epsilon parameter to use for optimization (default: 1e-8)
     -w_d or --weight_decay: weight decay parameter to use for optimization (default: 1e-5)
+```
 
 - Example usage
 
@@ -155,6 +161,10 @@ The following command can be used to run the script:
 python train.py
 ```
 
+# Future Improvements
 
+   - Add support for other datasets
+   - Implement different activation functions
+   - Implement dropout regularization
 
 
