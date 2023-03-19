@@ -1,5 +1,5 @@
 import numpy as np
-from interface import model_params,optimizer_params,training_params
+from interface import model_params,optimizer_params,training_params,wandb_params
 from tensorflow.keras.datasets import fashion_mnist,mnist
 from model import model
 from optimizer import optimizer
@@ -7,6 +7,10 @@ from tqdm import tqdm
 from metrics import accuracy
 from interface import model_params
 from functions import functions
+import wandb
+
+
+wandb.init(project=wandb_params["project_name"])
 
 
 # More datasets can be added in the following code
@@ -18,7 +22,6 @@ elif (training_params['dataset'] == "mnist") :  (x_train, y_train), (x_test, y_t
 
 #################################################################################################
 
-(x_train, y_train), (x_test, y_test) = fashion_mnist.load_data()
 x_train = x_train.reshape((x_train.shape[0],x_train.shape[1]*x_train.shape[2]))
 x_test = x_test.reshape((x_test.shape[0],x_test.shape[1]*x_test.shape[2]))
 
@@ -90,13 +93,13 @@ for e in range(1,epochs+1):
 
   # Residue update
   if(curr>0): opt.optimize(nn,dw,db,batch_size)
-  print(e,Loss/len(x_train))
 
-y_pred = [np.argmax(nn.forward(x_train[i])['y_hat']) for i in range(len(x_train))]
-print("Training Accuracy ",accuracy(y_pred,y_train))  
+  y_pred_train = np.array([np.argmax(nn.forward(x_train[i])['y_hat']) for i in range(len(x_train))])
+  y_pred_val = np.array([np.argmax(nn.forward(x_val[i])['y_hat']) for i in range(len(x_val))])
 
-y_pred = [np.argmax(nn.forward(x_val[i])['y_hat']) for i in range(len(x_val))]
-print("Validation Accuracy ",accuracy(y_pred,y_val))  
+  wandb.log({"Loss" : Loss/len(x_train), "Training Accuracy" : accuracy(y_pred_train,y_train), "Validation Accuracy" : accuracy(y_pred_val,y_val)})
 
-y_pred = [np.argmax(nn.forward(x_test[i])['y_hat']) for i in range(len(x_test))]
-print("Testing Accuracy ",accuracy(y_pred,y_test)) 
+
+y_pred_test = [np.argmax(nn.forward(x_test[i])['y_hat']) for i in range(len(x_test))]
+wandb.log({"Testing Accuracy" : accuracy(y_pred_test,y_test)})
+
